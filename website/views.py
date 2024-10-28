@@ -18,7 +18,6 @@ def product_delete(request, product_id):
     return redirect('product_index_index')
 
 def product_create(request):
-    global productForm
     if request.method == "POST":
         productForm = ProductForm(request.POST)
         if productForm.is_valid():
