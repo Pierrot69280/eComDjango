@@ -1,0 +1,17 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Détails du Produit{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h1 class="display-5">{{ product.title }}</h1>
+            <p class="lead">{{ product.description }}</p>
+            <p><strong>Prix:</strong> {{ product.price }} €</p>
+            <a href="{% url 'product_index' %}" class="btn btn-secondary">Retour à la liste</a>
+            <a href="{% url 'product_edit' product.id %}" class="btn btn-warning">Modifier</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

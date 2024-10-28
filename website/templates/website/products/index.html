@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'website/base.html' %}
 
-</body>
-</html>
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-light">Produits</h1>
+        <p class="lead text-muted">Gérez et découvrez vos produits facilement</p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for product in products %}
+                    <li class="list-group-item py-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">
+                                <a href="{% url 'product_show' product.id %}" class="text-decoration-none text-primary fw-bold">
+                                    {{ product.title }}
+                                </a>
+                            </h5>
+                            <p class="text-muted mb-0">{{ product.description|truncatewords:10 }}</p>
+                            <p class="text-muted mt-3">Prix : {{ product.price }} €</p>
+                        </div>
+                        <div class="d-flex">
+                            <a href="{% url 'product_edit' product.id %}" class="btn btn-outline-warning btn-sm me-2">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                            <form action="{% url 'product_delete' product.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item py-4 text-center">
+                        <p class="text-muted mb-0">Aucun produit disponible pour le moment.</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{% url 'product_create' %}" class="btn btn-primary btn-lg shadow-sm">
+            <i class="fas fa-plus-circle"></i> Ajouter un Nouveau Produit
+        </a>
+    </div>
+</div>
+{% endblock %}
