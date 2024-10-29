@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from website.forms import ProductForm
 from website.models import Product
+from django.contrib.auth import authenticate, login, logout
+from .forms import ProductForm, SignupForm, LoginForm
+
 
 
 def product_index(request):
@@ -36,3 +38,30 @@ def product_edit(request, product_id):
     else:
         productForm = ProductForm(instance=product)
     return render(request, "website/products/edit.html", {"productForm": productForm})
+
+
+def user_signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = SignupForm()
+    return render(request, 'website/registration/signup.html', {'form': form})
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('product_index')
+    else:
+        form = LoginForm()
+    return render(request, 'website/registration/login.html', {'form': form})
+def user_logout(request):
+    logout(request)
+    return redirect('login')
