@@ -1,10 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from website.models import Product
 from django.contrib.auth import authenticate, login, logout
 from .forms import ProductForm, SignupForm, LoginForm
-
-
-
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category
+from .forms import CategoryForm
 def product_index(request):
     products = Product.objects.all()
     return render(request, 'website/products/index.html', {'products': products})
@@ -39,6 +38,35 @@ def product_edit(request, product_id):
         productForm = ProductForm(instance=product)
     return render(request, "website/products/edit.html", {"productForm": productForm})
 
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'website/categories/index.html', {'categories': categories})
+
+def category_create(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('category_list')
+    else:
+        form = CategoryForm()
+    return render(request, 'website/categories/create.html', {'form': form})
+
+def category_edit(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == "POST":
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('category_list')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'website/categories/edit.html', {'form': form, 'category': category})
+
+def category_delete(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.delete()
+    return redirect('category_list')
 
 def user_signup(request):
     if request.method == 'POST':

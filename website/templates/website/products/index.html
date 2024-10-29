@@ -21,6 +21,7 @@
                                 </a>
                             </h5>
                             <p class="text-muted mb-0">{{ product.description|truncatewords:10 }}</p>
+                            <p class="text-muted">Catégorie: {{ product.category.name|default:"Non spécifiée" }}</p>
                             <p class="text-muted mt-3">Prix : {{ product.price }} €</p>
                         </div>
                         <div class="d-flex">
