@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['title', 'description', 'price', 'category']
+        fields = ['title', 'description', 'price', 'category', 'image']
 
 class CategoryForm(forms.ModelForm):
     class Meta:

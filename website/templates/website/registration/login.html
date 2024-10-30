@@ -1,7 +1,48 @@
-<h1>Login</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-    <a href="{% url 'signup' %}">Don't have an account? Create one</a>
-</form>
+
+{% extends 'website/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="card p-5 shadow-lg border-0" style="max-width: 400px; width: 100%;">
+            <h1 class="mb-4 text-center text-primary">Login</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="{{ form.username.id_for_label }}" class="form-label fw-semibold">Username</label>
+                    <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}"
+                           class="form-control shadow-sm" placeholder="Enter your username">
+                    {% if form.username.errors %}
+                        <div class="text-danger mt-2">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.password.id_for_label }}" class="form-label fw-semibold">Password</label>
+                    <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}"
+                           class="form-control shadow-sm" placeholder="Enter your password">
+                    {% if form.password.errors %}
+                        <div class="text-danger mt-2">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                </button>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'signup' %}" class="text-decoration-none text-muted">
+                        Don't have an account? <span class="text-primary">Create one</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

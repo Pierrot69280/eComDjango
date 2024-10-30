@@ -1,7 +1,58 @@
-<h1>Signup</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-    <a href="{% url 'login' %}">Already have an account?</a>
-</form>
+{% extends 'website/base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="card p-5 shadow-lg border-0" style="max-width: 500px; width: 100%;">
+            <h1 class="mb-4 text-center text-primary">Signup</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="{{ form.username.id_for_label }}" class="form-label fw-semibold">Username</label>
+                    <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}"
+                           class="form-control shadow-sm" placeholder="Choose a username">
+                    {% if form.username.errors %}
+                        <div class="text-danger mt-2">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.password1.id_for_label }}" class="form-label fw-semibold">Password</label>
+                    <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}"
+                           class="form-control shadow-sm" placeholder="Enter a password">
+                    {% if form.password1.errors %}
+                        <div class="text-danger mt-2">
+                            {{ form.password1.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.password2.id_for_label }}" class="form-label fw-semibold">Confirm Password</label>
+                    <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}"
+                           class="form-control shadow-sm" placeholder="Confirm your password">
+                    {% if form.password2.errors %}
+                        <div class="text-danger mt-2">
+                            {{ form.password2.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">
+                    <i class="fas fa-user-plus me-2"></i> Signup
+                </button>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'login' %}" class="text-decoration-none text-muted">
+                        Already have an account? <span class="text-primary">Login here</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

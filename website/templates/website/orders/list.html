@@ -4,60 +4,82 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-white">My Order Details</h2>
+    <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold text-white">My Order Details</h2>
+        <p class="lead text-light">Review your orders and manage your purchases effortlessly</p>
+    </div>
 
     {% if orders %}
-        <table class="table table-bordered table-hover shadow-sm text-white">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Order ID</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Products</th>
-                    <th scope="col">Total Quantity</th>
-                    <th scope="col">Total (€)</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
+        <div class="table-responsive bg-dark rounded-3 shadow-lg">
+            <table class="table table-bordered table-hover text-white align-middle mb-0">
+                <thead class="table-light text-dark">
                     <tr>
-                        <td>{{ order.id }}</td>
-                        <td>
-                            <span class="badge {% if order.is_completed %}bg-success{% else %}bg-warning{% endif %}">
-                                {% if order.is_completed %}Completed{% else %}Pending{% endif %}
-                            </span>
-                        </td>
-                        <td>
-                            <ul class="list-unstyled mb-0">
-                                {% for item in order.order_items.all %}
-                                    <li class="d-flex justify-content-between align-items-center">
-                                        <span>{{ item.product.title }} (x{{ item.quantity }})</span>
-                                        <span class="text-muted">{{ item.product.price }} €</span>
-                                        <form action="{% url 'order_item_delete' item.product.id %}" method="post" style="display:inline;">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-outline-danger btn-sm ms-2">
-                                                <i class="fas fa-trash-alt"></i> Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>{{ order.order_items.count }}</td>
-                        <td>{{ order.total }} €</td>
-                        <td>
-                            {% if not order.is_completed %}
-                                <a href="{% url 'create_checkout_session' order.id %}" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-credit-card"></i> Pay Now
-                                </a>
-                            {% endif %}
-                        </td>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Total Quantity</th>
+                        <th scope="col">Total (€)</th>
+                        <th scope="col">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr class="border-light table-dark table-hover-light">
+                            <td class="fw-bold">{{ order.id }}</td>
+                            <td>
+                                <span class="badge {% if order.is_completed %}bg-success{% else %}bg-warning{% endif %} fs-6 py-2 px-3">
+                                    {% if order.is_completed %}Completed{% else %}Pending{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <ul class="list-unstyled mb-0">
+                                    {% for item in order.order_items.all %}
+                                        <li class="d-flex justify-content-between align-items-center py-2">
+                                            <div class="d-flex align-items-center">
+                                                {% if item.product.image %}
+                                                    <img src="{{ item.product.image.url }}" class="img-fluid me-3" alt="{{ item.product.title }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                                {% endif %}
+                                                <div>
+                                                    <span class="fw-bold">{{ item.product.title }}</span>
+                                                    <span class="badge bg-secondary ms-2">x{{ item.quantity }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-muted me-3">{{ item.product.price }} €</span>
+                                                <form action="{% url 'order_item_delete' item.product.id %}" method="post" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-danger btn-hover-light">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td class="text-center">{{ order.order_items.count }}</td>
+                            <td class="fw-bold text-success">{{ order.total }} €</td>
+                            <td class="text-center">
+                                {% if not order.is_completed %}
+                                    <a href="{% url 'create_checkout_session' order.id %}" class="btn btn-primary btn-sm btn-hover-light">
+                                        <i class="fas fa-credit-card"></i> Pay Now
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
-        <p class="text-center text-white">You have no orders at the moment.</p>
+        <div class="text-center text-light py-5">
+            <p class="fs-4">You have no orders at the moment.</p>
+            <a href="{% url 'product_index' %}" class="btn btn-outline-light btn-lg mt-3">
+                <i class="fas fa-shopping-bag"></i> Shop Now
+            </a>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
