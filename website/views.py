@@ -1,6 +1,6 @@
-from website.models import Product
+from website.models import Product, Order, OrderItem
 from django.contrib.auth import authenticate, login, logout
-from .forms import ProductForm, SignupForm, LoginForm
+from .forms import ProductForm, SignupForm, LoginForm, OrderForm
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category
 from .forms import CategoryForm
@@ -16,7 +16,7 @@ def product_show(request, product_id):
 def product_delete(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     product.delete()
-    return redirect('product_index_index')
+    return redirect('product_index')
 
 def product_create(request):
     if request.method == "POST":
@@ -67,6 +67,34 @@ def category_delete(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     category.delete()
     return redirect('category_list')
+
+def order_list(request):
+    orders = Order.objects.filter(user=request.user)
+
+    for order in orders:
+        total = sum(item.product.price * item.quantity for item in order.order_items.all())
+        order.total = total
+
+    return render(request, 'website/orders/list.html', {'orders': orders})
+
+
+def add_product_to_order(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    product = get_object_or_404(Product, id=product_id)
+    order, created = Order.objects.get_or_create(user=request.user, is_completed=False)
+
+    order_item, item_created = OrderItem.objects.get_or_create(order=order, product=product)
+    if not item_created:
+        order_item.quantity += 1
+        order_item.save()
+    return redirect('product_index')
+
+def order_item_delete(request, product_id):
+    order_item = get_object_or_404(OrderItem, order__user=request.user, order__is_completed=False, product_id=product_id)
+    order_item.delete()
+    return redirect('order_list')
 
 def user_signup(request):
     if request.method == 'POST':
