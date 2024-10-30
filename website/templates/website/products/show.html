@@ -34,5 +34,49 @@
             </div>
         </div>
     </div>
+
+    <div class="mt-5 text-white">
+        <h3 class="mb-4">Reviews</h3>
+        {% for comment in product.comments.all %}
+            <div class="border rounded shadow-sm p-3 mb-4 bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/default-avatar.jpg' %}" alt="Avatar" class="rounded-circle me-2" width="40" height="40">
+                        <strong class="text-dark">{{ comment.author.username }}</strong>
+                    </div>
+                    <small class="text-muted">{{ comment.created_at|date:"d M Y, H:i" }}</small>
+                </div>
+                <p class="mt-3 mb-1 text-secondary">{{ comment.content }}</p>
+
+                {% if request.user == comment.author %}
+                    <div class="d-flex justify-content-end mt-2">
+                        <a href="{% url 'comment_edit' comment.id %}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                        <a href="{% url 'comment_delete' comment.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p class="text-muted fst-italic">No reviews yet. Be the first to share your thoughts!</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="mt-5">
+            <h3 class="mb-4 text-white">Add a Review</h3>
+            <form method="post" action="{% url 'add_comment' product.id %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_content" class="form-label text-white">Your Review</label>
+                    <textarea name="content" id="id_content" class="form-control" rows="4" required></textarea>
+                    <div class="invalid-feedback">
+                        Please enter a review before submitting.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg mb-5">Submit Review</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="mt-3"><a href="{% url 'login' %}" class="text-decoration-none">Log in</a> to add a review.</p>
+    {% endif %}
 </div>
 {% endblock %}

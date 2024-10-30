@@ -1,9 +1,12 @@
 import stripe
 from django.conf import settings
-from website.models import Product, Order, OrderItem
+from website.models import Product, Order, OrderItem, Comment
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm, LoginForm, OrderForm
+from .forms import SignupForm, LoginForm
 from django.shortcuts import render, get_object_or_404, redirect
+from .forms import CommentForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 def product_index(request):
     products = Product.objects.all()
@@ -39,6 +42,53 @@ def order_item_delete(request, product_id):
     order_item = get_object_or_404(OrderItem, order__user=request.user, order__is_completed=False, product_id=product_id)
     order_item.delete()
     return redirect('order_list')
+
+
+@login_required
+def add_comment(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.author = request.user
+            comment.save()
+            return redirect('product_show', product_id=product_id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'website/products/show.html', {'product': product, 'form': form})
+
+
+@login_required
+def comment_edit(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user != comment.author:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('product_show', product_id=comment.product.id)
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'website/comments/edit.html', {'form': form, 'product': comment.product, 'comment': comment})
+
+
+
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user != comment.author:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+
+    product_id = comment.product.id
+    comment.delete()
+    return redirect('product_show', product_id=product_id)
 
 # Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY

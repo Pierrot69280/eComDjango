@@ -1,0 +1,19 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Edit Review{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="mb-4 text-white">Edit Your Review</h3>
+    <form method="post" action="{% url 'comment_edit' comment.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_content" class="form-label text-white">Your Review</label>
+            <textarea name="content" id="id_content" class="form-control" rows="4" required>{{ form.content.value }}</textarea>
+            <div class="invalid-feedback">Please enter a review before submitting.</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Update Review</button>
+    </form>
+</div>
+{% endblock %}

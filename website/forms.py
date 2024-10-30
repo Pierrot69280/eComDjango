@@ -2,6 +2,7 @@ from django import forms
 from website.models import Product, Category, Order
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Comment
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -23,6 +24,11 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['products']
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
 
 class SignupForm(UserCreationForm):
     class Meta:

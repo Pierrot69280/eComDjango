@@ -10,7 +10,7 @@
     {% bootstrap_javascript %}
 </head>
 
-<body class="bg-dark">
+<body class="d-flex flex-column min-vh-100 bg-dark">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
     <div class="container">
@@ -49,7 +49,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container flex-grow-1">
     <div class="row">
         <div class="col">
             {% block content %}
@@ -57,6 +57,17 @@
         </div>
     </div>
 </div>
+
+<footer class="bg-light text-dark py-4 mt-auto">
+    <div class="container text-center">
+        <p class="small mb-1">&copy; 2024 Ecom. Pierre Nogaro.</p>
+        <div class="d-flex justify-content-center">
+            <a href="#" class="text-dark me-3">About Us</a>
+            <a href="#" class="text-dark me-3">Contact</a>
+            <a href="#" class="text-dark">Legal Notice</a>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>
