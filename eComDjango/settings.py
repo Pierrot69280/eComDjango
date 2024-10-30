@@ -74,6 +74,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eComDjango.wsgi.application'
 
 
+# Stripe
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51PEq5QRwRcPv8FJekQzff0qHq5hiK3xbF3za0Lk6kZH3sAcBUlQTcqUjquOAyaaPtRbLJtQpkJp04Us5qMOoEm3C008tvtIivT'
+STRIPE_SECRET_KEY = 'sk_test_51PEq5QRwRcPv8FJereqoizYUo8IqBchpDXkX5wKNAxulY7iiEyYLwWkxQUdvhsEoN99lj1v4PywWN0UtJ3J329ne004pfZfEuY'
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

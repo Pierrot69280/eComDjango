@@ -15,6 +15,7 @@
                     <th scope="col">Products</th>
                     <th scope="col">Total Quantity</th>
                     <th scope="col">Total (€)</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,13 @@
                         </td>
                         <td>{{ order.order_items.count }}</td>
                         <td>{{ order.total }} €</td>
+                        <td>
+                            {% if not order.is_completed %}
+                                <a href="{% url 'create_checkout_session' order.id %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-credit-card"></i> Pay Now
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

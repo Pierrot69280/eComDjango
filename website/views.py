@@ -1,3 +1,5 @@
+import stripe
+from django.conf import settings
 from website.models import Product, Order, OrderItem
 from django.contrib.auth import authenticate, login, logout
 from .forms import ProductForm, SignupForm, LoginForm, OrderForm
@@ -95,6 +97,55 @@ def order_item_delete(request, product_id):
     order_item = get_object_or_404(OrderItem, order__user=request.user, order__is_completed=False, product_id=product_id)
     order_item.delete()
     return redirect('order_list')
+
+#Stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def create_checkout_session(request, order_id):
+    order = Order.objects.get(id=order_id, user=request.user, is_completed=False)
+    line_items = []
+
+    for item in order.order_items.all():
+        line_items.append({
+            'price_data': {
+                'currency': 'eur',
+                'product_data': {
+                    'name': item.product.title,
+                },
+                'unit_amount': int(item.product.price * 100),
+            },
+            'quantity': item.quantity,
+        })
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=line_items,
+        mode='payment',
+        success_url=request.build_absolute_uri('/payment/success/') + f"?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=request.build_absolute_uri('/payment/cancel/'),
+        metadata={
+            'order_id': order.id
+        }
+    )
+
+    return redirect(session.url)
+
+
+def payment_success(request):
+    session_id = request.GET.get('session_id')
+    session = stripe.checkout.Session.retrieve(session_id)
+
+    if session.payment_status == 'paid':
+        order = Order.objects.get(id=session.metadata.order_id, user=request.user)
+        order.is_completed = True
+        order.save()
+
+    return render(request, 'website/stripe/payment_success.html')
+
+
+
+def payment_cancel(request):
+    return render(request, 'website/stripe/payment_cancel.html')
 
 def user_signup(request):
     if request.method == 'POST':
