@@ -1,10 +1,10 @@
 {% extends 'website/base.html' %}
 
-{% block title %}Ajouter un Produit{% endblock %}
+{% block title %}Add Product{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="display-5 mb-4">Ajouter un Produit</h1>
+    <h1 class="display-5 mb-4">Add Product</h1>
     <div class="card shadow-sm">
         <div class="card-body">
             <form method="POST">
@@ -12,8 +12,8 @@
                 <div class="mb-3">
                     {{ productForm.as_p }}
                 </div>
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
-                <a href="{% url 'product_index' %}" class="btn btn-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'product_index' %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

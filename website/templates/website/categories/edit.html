@@ -1,10 +1,10 @@
 {% extends 'website/base.html' %}
 
-{% block title %}{% if form.instance.pk %}Modifier la Catégorie{% else %}Ajouter une Catégorie{% endif %}{% endblock %}
+{% block title %}{% if form.instance.pk %}Edit Category{% else %}Add Category{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="display-5 mb-4">{% if form.instance.pk %}Modifier la Catégorie{% else %}Ajouter une Catégorie{% endif %}</h1>
+    <h1 class="display-5 mb-4">{% if form.instance.pk %}Edit Category{% else %}Add Category{% endif %}</h1>
     <div class="card shadow-sm">
         <div class="card-body">
             <form method="post" action="{% if form.instance.pk %}{% url 'category_edit' form.instance.pk %}{% else %}{% url 'category_create' %}{% endif %}">
@@ -12,8 +12,8 @@
                 <div class="mb-3">
                     {{ form.as_p }}
                 </div>
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
-                <a href="{% url 'category_list' %}" class="btn btn-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

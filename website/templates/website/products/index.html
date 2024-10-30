@@ -1,12 +1,12 @@
 {% extends 'website/base.html' %}
 
-{% block title %}Produits{% endblock %}
+{% block title %}Products{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-light">Produits</h1>
-        <p class="lead text-muted">Gérez et découvrez vos produits facilement</p>
+        <h1 class="display-4 fw-bold text-light">Products</h1>
+        <p class="lead text-muted">Manage and discover your products easily</p>
     </div>
 
     <div class="card shadow-sm">
@@ -21,24 +21,27 @@
                                 </a>
                             </h5>
                             <p class="text-muted mb-0">{{ product.description|truncatewords:10 }}</p>
-                            <p class="text-muted">Catégorie: {{ product.category.name|default:"Non spécifiée" }}</p>
-                            <p class="text-muted mt-3">Prix : {{ product.price }} €</p>
+                            <p class="text-muted">Category: {{ product.category.name|default:"Not specified" }}</p>
+                            <p class="text-muted mt-3">Price: {{ product.price }} €</p>
                         </div>
                         <div class="d-flex">
+                            <a href="{% url 'add_product_to_order' product.id %}" class="btn btn-outline-success btn-sm me-2">
+                                <i class="fas fa-cart-plus"></i> Add to Order
+                            </a>
                             <a href="{% url 'product_edit' product.id %}" class="btn btn-outline-warning btn-sm me-2">
-                                <i class="fas fa-edit"></i> Modifier
+                                <i class="fas fa-edit"></i> Edit
                             </a>
                             <form action="{% url 'product_delete' product.id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                    <i class="fas fa-trash-alt"></i> Delete
                                 </button>
                             </form>
                         </div>
                     </li>
                 {% empty %}
                     <li class="list-group-item py-4 text-center">
-                        <p class="text-muted mb-0">Aucun produit disponible pour le moment.</p>
+                        <p class="text-muted mb-0">No products available at the moment.</p>
                     </li>
                 {% endfor %}
             </ul>
@@ -47,7 +50,7 @@
 
     <div class="text-center mt-5">
         <a href="{% url 'product_create' %}" class="btn btn-primary btn-lg shadow-sm">
-            <i class="fas fa-plus-circle"></i> Ajouter un Nouveau Produit
+            <i class="fas fa-plus-circle"></i> Add a New Product
         </a>
     </div>
 </div>

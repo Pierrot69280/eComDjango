@@ -21,7 +21,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'product_index' %}">Product</a>
+                    <a class="nav-link active" href="{% url 'product_index' %}">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'category_list' %}">Categories</a>
@@ -34,7 +34,7 @@
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-danger" href="#">Welcome, {{ user.username }}</a>
+                        <a class="nav-link text-danger" href="{% url 'order_list' %}">Welcome, {{ user.username }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -52,14 +52,14 @@
     </div>
 </nav>
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                {% block content %}
-                {% endblock %}
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
+</div>
 
 </body>
 </html>
