@@ -5,14 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.product_index, name='product_index'),
-    path('product/create/', views.product_create, name='product_create'),
     path('product/<int:product_id>/', views.product_show, name='product_show'),
-    path('product/<int:product_id>/edit/', views.product_edit, name='product_edit'),
-    path('product/<int:product_id>/delete/', views.product_delete, name='product_delete'),
-    path('categories/', views.category_list, name='category_list'),
-    path('categories/create/', views.category_create, name='category_create'),
-    path('categories/<int:category_id>/edit/', views.category_edit, name='category_edit'),
-    path('categories/<int:category_id>/delete/', views.category_delete, name='category_delete'),
     path('orders/', views.order_list, name='order_list'),
     path('product/<int:product_id>/add_to_order/', views.add_product_to_order, name='add_product_to_order'),
     path('order/item/<int:product_id>/delete/', views.order_item_delete, name='order_item_delete'),
