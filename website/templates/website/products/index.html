@@ -28,15 +28,6 @@
                             <a href="{% url 'add_product_to_order' product.id %}" class="btn btn-outline-success btn-sm me-2">
                                 <i class="fas fa-cart-plus"></i> Add to Order
                             </a>
-                            <a href="{% url 'product_edit' product.id %}" class="btn btn-outline-warning btn-sm me-2">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{% url 'product_delete' product.id %}" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </form>
                         </div>
                     </li>
                 {% empty %}
@@ -46,12 +37,6 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
-
-    <div class="text-center mt-5">
-        <a href="{% url 'product_create' %}" class="btn btn-primary btn-lg shadow-sm">
-            <i class="fas fa-plus-circle"></i> Add a New Product
-        </a>
     </div>
 </div>
 {% endblock %}
