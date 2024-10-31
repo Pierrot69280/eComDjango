@@ -1,8 +1,8 @@
 import stripe
 from django.conf import settings
-from website.models import Product, Order, OrderItem, Comment
+from website.models import Product, Order, OrderItem, Comment, Profile
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, ProfileForm
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CommentForm
 from django.contrib.auth.decorators import login_required
@@ -144,6 +144,30 @@ def payment_success(request):
 
 def payment_cancel(request):
     return render(request, 'website/stripe/payment_cancel.html')
+
+@login_required
+def profile_edit(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'website/profile/edit.html', {'form': form})
+
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'website/profile/index.html', {'form': form, 'profile': profile})
 
 def user_signup(request):
     if request.method == 'POST':

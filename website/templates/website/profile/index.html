@@ -1,0 +1,31 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0">Profile Overview</h3>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="mb-3">{{ profile.user.username }}</h4>
+                    <h5 class="mb-3">{{ profile.pseudo }}</h5>
+                    {% if profile.image %}
+                        <img src="{{ profile.image.url }}" alt="Profile Image" class="rounded-circle border border-3 border-primary mb-3" width="180">
+                    {% else %}
+                        <img src="{% static 'images/default-avatar.jpg' %}" alt="Default Profile Image" class="rounded-circle border border-3 border-primary mb-3" width="180">
+                    {% endif %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" rows="5" readonly>{{ profile.description }}</textarea>
+                    </div>
+                    <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary btn-sm mt-3">
+                        <i class="bi bi-pencil"></i> Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
 
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    {% load bootstrap_icons %}
+    {% load widget_tweaks %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     {% bootstrap_javascript %}
 </head>
@@ -25,31 +26,47 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'product_index' %}">Products</a>
                 </li>
-                {% if user.is_staff %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                    <a class="nav-link" href="{% url 'order_history' %}">
+                        <i class="bi bi-clock-history"></i> Order History
+                    </a>
                 </li>
                 {% endif %}
-                <a class="nav-link" href="{% url 'order_list' %}">
-                    <i class="bi bi-bag-heart-fill text-dark"></i>
-                </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'order_list' %}">
+                        <i class="bi bi-bag-heart-fill text-dark"></i>
+                    </a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="{% url 'order_history' %}">Welcome, {{ user.username }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
+                <li class="nav-item d-flex align-items-center">
+                    {% if user.profile.image %}
+                        <img src="{{ user.profile.image.url }}" alt="Profile Image" class="rounded-circle me-2" width="30" height="30">
+                    {% else %}
+                        <img src="{% static 'images/default-avatar.jpg' %}" alt="Default Avatar" class="rounded-circle me-2" width="30" height="30">
+                    {% endif %}
+                    <a class="nav-link text-danger" href="{% url 'profile_view' %}">Welcome, {{ user.username }}</a>
+                </li>
+                    {% if user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="bi bi-power text-danger"></i>
+                    </a>
+                </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">Register</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup' %}">Register</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
