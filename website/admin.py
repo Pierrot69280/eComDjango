@@ -14,10 +14,10 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'is_completed')
+    list_display = ('id', 'user', 'status', 'is_completed')
     search_fields = ('user__username',)
-    list_filter = ('is_completed',)
-    filter_horizontal = ('products',)
+    list_filter = ('status', 'is_completed')
+    readonly_fields = ('is_completed', 'products')
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):

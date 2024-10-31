@@ -17,13 +17,22 @@ def product_show(request, product_id):
     return render(request, 'website/products/show.html', {'product': product})
 
 def order_list(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user, is_completed=False)
 
     for order in orders:
         total = sum(item.product.price * item.quantity for item in order.order_items.all())
         order.total = total
 
     return render(request, 'website/orders/list.html', {'orders': orders})
+
+def order_history(request):
+    completed_orders = Order.objects.filter(user=request.user, is_completed=True)
+
+    for order in completed_orders:
+        total = sum(item.product.price * item.quantity for item in order.order_items.all())
+        order.total = total
+
+    return render(request, 'website/orders/history.html', {'completed_orders': completed_orders})
 
 def add_product_to_order(request, product_id):
     if not request.user.is_authenticated:

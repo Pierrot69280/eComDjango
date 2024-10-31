@@ -7,6 +7,8 @@
 
     {% load bootstrap5 %}
     {% bootstrap_css %}
+    {% load bootstrap_icons %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     {% bootstrap_javascript %}
 </head>
 
@@ -23,15 +25,20 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'product_index' %}">Products</a>
                 </li>
+                {% if user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
                 </li>
+                {% endif %}
+                <a class="nav-link" href="{% url 'order_list' %}">
+                    <i class="bi bi-bag-heart-fill text-dark"></i>
+                </a>
             </ul>
 
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-danger" href="{% url 'order_list' %}">Welcome, {{ user.username }}</a>
+                        <a class="nav-link text-danger" href="{% url 'order_history' %}">Welcome, {{ user.username }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>

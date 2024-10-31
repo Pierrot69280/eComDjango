@@ -18,12 +18,22 @@ class Product(models.Model):
         return self.title
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('completed', 'Completed'),
+        ('canceled', 'Canceled'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, related_name='orders')
     is_completed = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Order {self.id} by {self.user}"
+        return f"Order {self.id} by {self.user} - {self.get_status_display()}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
