@@ -15,83 +15,83 @@
 
 <body class="d-flex flex-column min-vh-100 bg-dark">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Ecom</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'product_index' %}">Products</a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order_history' %}">
-                        <i class="bi bi-clock-history"></i> Order History
-                    </a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order_list' %}">
-                        <i class="bi bi-bag-heart-fill text-dark"></i>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                <li class="nav-item d-flex align-items-center">
-                    {% if user.profile.image %}
-                        <img src="{{ user.profile.image.url }}" alt="Profile Image" class="rounded-circle me-2" width="30" height="30">
-                    {% else %}
-                        <img src="{% static 'images/default-avatar.jpg' %}" alt="Default Avatar" class="rounded-circle me-2" width="30" height="30">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Ecom</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'product_index' %}">Products</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order_history' %}">
+                                <i class="bi bi-clock-history"></i> Order History
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order_list' %}">
+                                <i class="bi bi-bag-heart-fill text-dark"></i>
+                            </a>
+                        </li>
                     {% endif %}
-                    <a class="nav-link text-danger" href="{% url 'profile_view' %}">Welcome, {{ user.username }}</a>
-                </li>
-                    {% if user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">
-                        <i class="bi bi-power text-danger"></i>
-                    </a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'signup' %}">Register</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
+                </ul>
 
-<div class="container flex-grow-1">
-    <div class="row">
-        <div class="col">
-            {% block content %}
-            {% endblock %}
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item d-flex align-items-center">
+                            {% if user.profile.image %}
+                                <img src="{{ user.profile.image.url }}" alt="Profile Image" class="rounded-circle me-2" width="30" height="30">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.jpg' %}" alt="Default Avatar" class="rounded-circle me-2" width="30" height="30">
+                            {% endif %}
+                            <a class="nav-link text-danger" href="{% url 'profile_view' %}">Welcome, {{ user.username }}</a>
+                        </li>
+                        {% if user.is_staff %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="bi bi-power text-danger"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</div>
+    </nav>
 
-<footer class="bg-light text-dark py-4 mt-auto">
-    <div class="container text-center">
-        <p class="small mb-1">&copy; 2024 Ecom. Pierre Nogaro.</p>
-        <div class="d-flex justify-content-center">
-            <a href="#" class="text-dark me-3">About Us</a>
-            <a href="#" class="text-dark me-3">Contact</a>
-            <a href="#" class="text-dark">Legal Notice</a>
+    <div class="container flex-grow-1">
+        <div class="row">
+            <div class="col">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
-</footer>
+
+    <footer class="bg-light text-dark py-4 mt-auto">
+        <div class="container text-center">
+            <p class="small mb-1">&copy; 2024 Ecom. Pierre Nogaro.</p>
+            <div class="d-flex justify-content-center">
+                <a href="#" class="text-dark me-3">About Us</a>
+                <a href="#" class="text-dark me-3">Contact</a>
+                <a href="#" class="text-dark">Legal Notice</a>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>

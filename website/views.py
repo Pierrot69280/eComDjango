@@ -16,6 +16,8 @@ def product_show(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, 'website/products/show.html', {'product': product})
 
+
+@login_required
 def order_list(request):
     orders = Order.objects.filter(user=request.user, is_completed=False)
 
@@ -25,6 +27,8 @@ def order_list(request):
 
     return render(request, 'website/orders/list.html', {'orders': orders})
 
+
+@login_required
 def order_history(request):
     completed_orders = Order.objects.filter(user=request.user, is_completed=True)
 
@@ -89,7 +93,7 @@ def comment_edit(request, comment_id):
     return render(request, 'website/comments/edit.html', {'form': form, 'product': comment.product, 'comment': comment})
 
 
-
+@login_required
 def comment_delete(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.user != comment.author:
@@ -101,6 +105,7 @@ def comment_delete(request, comment_id):
 
 # Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 def create_checkout_session(request, order_id):
     order = Order.objects.get(id=order_id, user=request.user, is_completed=False)
